@@ -17,7 +17,8 @@ services:
     container_name: mycat
     restart: always
     volumes:
-      - ./mycat/conf/:/mycat/conf/:ro
+      - ./mycat/conf/schema.xml:/mycat/conf/schema.xml:ro
+      - ./mycat/conf/server.xml:/mycat/conf/server.xml:ro
       - ./mycat/log/:/mycat/logs/:rw
       - ./mycat/hosts:/etc/hosts:ro
     ports:
@@ -33,7 +34,7 @@ services:
 
   #-------------------------mysql_master-------------------------#
   mysql_master:
-    image: mysql:v0.1
+    image: mysql_master:v0.1
     build:
       context: ./mysql/master
       dockerfile: Dockerfile
@@ -59,7 +60,7 @@ services:
 
   #-------------------------mysql_slave_1-------------------------#
   mysql_slave_1:
-    image: mysql:v0.1
+    image: mysql_slave_1:v0.1
     build:
       context: ./mysql/slave1
       dockerfile: Dockerfile

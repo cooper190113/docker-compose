@@ -5,6 +5,10 @@
 #https://www.cnblogs.com/kingsonfu/p/10627802.html
 #https://www.cnblogs.com/wggj/p/9994020.html
 #https://blog.csdn.net/qq_28804275/article/details/80892093
+#https://www.cnblogs.com/YingYue/p/7677814.html
+#https://yq.aliyun.com/articles/46629
+#http://www.dedecms.com/knowledge/data-base/mysql/2012/0819/8124.html
+#https://www.jianshu.com/p/944e03095351 mysql 基于docker-compose配置主从复制（一主一从）
 FROM java:8-jre
 
 ENV mycat-version Mycat-server-1.6.5-release-20191127214730-linux.tar.gz
