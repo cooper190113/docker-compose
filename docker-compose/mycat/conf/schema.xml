@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
+<mycat:schema xmlns:mycat="http://io.mycat/">
+
+	<!--这里的schema标签内的name名字需要和server.xml内的一致-->
+    <schema name="portal-center" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn1">
+    </schema>
+    <schema name="log-center" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn2">
+    </schema>
+
+	<!--这里写两个dataNode，对应上述两个schema标签，database的值表示数据库的真实名称 -->
+    <dataNode name="dn1" dataHost="dataHost1" database="portal-center"/>
+    <dataNode name="dn2" dataHost="dataHost1" database="log-center"/>
+
+    <!-- mycat 逻辑主机dataHost对应的物理主机.其中也设置对应的mysql登陆信息 -->
+    <!-- 定义数据主机dtHost，连接到MySQL读写分离集群 ,schema中的每一个dataHost中的host属性值必须唯一-->
+    <!-- dataHost实际上配置就是后台的数据库集群，一个datahost代表一个数据库集群
+    name唯一标识 dataHost 标签，供dataNode标签使用。
+    maxCon指定每个读写实例连接池的最大连接。也就是说，标签内嵌套的 writeHost、readHost 标签都会使用这个属性的值来实例化出连接池的最大连接数。
+    minCon指定每个读写实例连接池的最小连接，初始化连接池的大小。 -->
+
+    <!--读取负载均衡类型
+    balance="0", 不开启读写分离机制，所有读操作都发送到当前可用的 writeHost 上。
+    balance="1",全部的 readHost 与 stand by writeHost 参与 select 语句的负载均衡，简单的说，当双主双从模式(M1->S1，M2->S2，并且 M1 与 M2 互为主备)，正常情况下，M2,S1,S2 都参与 select 语句的负载均衡。
+    balance="2",所有读操作都随机的在 writeHost、readhost 上分发。
+    balance="3",所有读请求随机的分发到 wiriterHost 对应的 readhost 执行，writerHost 不负担读压力-->
+
+    <!--写入负载均衡类型
+    writeType="0",所有写操作发送到配置的第一个writeHost，这里就是我们的hostmaster，第一个挂了切到还生存的第二个writeHost
+    writeType="1",所有写操作都随机的发送到配置的 writeHost
+    writeType="2",没实现。-->
+
+    <!--switchType 属性
+    switchType="-1",表示不自动切换。
+    switchType="1",默认值，自动切换。
+    switchType="2",基于MySQL 主从同步的状态决定是否切换。-->
+
+    <dataHost name="dataHost1" maxCon="1000" minCon="10" balance="1"
+              writeType="0" dbType="mysql" dbDriver="native" switchType="-1" slaveThreshold="100">
+        <!--心跳检测 -->
+        <heartbeat>select user()</heartbeat>
+        <!--配置后台数据库的IP地址和端口号，还有账号密码 -->
+        <writeHost host="m1" url="192.18.0.3:3306" user="root" password="123456"/>
+        <writeHost host="s1" url="192.18.0.4:3306" user="root" password="123456"/>
+    </dataHost>
+
+</mycat:schema>
