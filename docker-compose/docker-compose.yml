@@ -26,7 +26,7 @@ services:
       - "9066:9066"
     links:
       - mysql_master
-      - mysql_slave_1
+      - mysql_slave1
     hostname: mycat
     networks:
       backend:
@@ -59,8 +59,8 @@ services:
     container_name: mysql_master
 
   #-------------------------mysql_slave_1-------------------------#
-  mysql_slave_1:
-    image: mysql_slave_1:v0.1
+  mysql_slave1:
+    image: mysql_slave1:v0.1
     build:
       context: ./mysql/slave1
       dockerfile: Dockerfile
@@ -82,11 +82,11 @@ services:
     networks:
       backend:
         ipv4_address: 192.18.0.4
-    container_name: mysql_slave_1
+    container_name: mysql_slave1
     links:
       - mysql_master
 
-#  #-------------------------postgres-------------------------#
+  #-------------------------postgres-------------------------#
 #  postgres:
 #    image: postgres:v0.1
 #    build:
@@ -105,85 +105,85 @@ services:
 #      - backend
 #    container_name: postgres
 
-#  #-------------------------redis-------------------------#
-#  redis:
-#    image: redis:v0.1
-#    build:
-#      context: ./redis
-#      dockerfile: Dockerfile
-#    restart: always
-#    ports:
-#      - "6379:6379"
-#    volumes:
-#      - ./redis/conf/redis.conf:/usr/local/etc/redis.conf
-#      - ./redis/data/:/data/
-##      - ./redis/log/redis.log:/var/log/redis/redis.log:rw
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.20
-#    container_name: redis
-#
-#  #-------------------------nginx-------------------------#
-#  nginx:
-#    image: nginx:v0.1
-#    build:
-#      context: ./nginx
-#      dockerfile: Dockerfile
-#    container_name: nginx
-#    restart: always
-#    ports:
-#      - 80:80
-#      - 443:443
-#      - 5050:5050
-#      - 4040:4040
-#    volumes:
-#      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-#      - ./nginx/conf.d/test.conf:/etc/nginx/conf.d/test.conf:ro
-#      - ./nginx/logs/:/var/log/nginx/
-#      - ./nginx/webapps/:/opt/webapps/
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.40
-#    links:
-#      - tomcat1:t01                                          #连接 tomcat镜像
-#      - tomcat2:t02                                          #连接 tomcat镜像
-#
-#  #-------------------------tomcat-------------------------#
-#  tomcat1:
-#    image: tomcat1:v0.1
-#    build:
-#      context: ./tomcat
-#      dockerfile: Dockerfile
-#    container_name: tomcat1
-#    restart: always
-#    ports:
-#      - 8082:8080
-##      - 8009:8009
-#    volumes:
-#      - ./tomcat/webapps/:/usr/local/tomcat/webapps/                #映射一个web服务
-#      - ./tomcat/conf/server.xml:/usr/local/tomcat/conf/server.xml  #映射 tomcat的配置文件到容器里
-#      - ./tomcat/logs/:/usr/local/tomcat/logs/
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.41
-#  #-------------------------tomcat-------------------------#
-#  tomcat2:
-#    image: tomcat2:v0.1
-#    build:
-#      context: ./tomcat
-#      dockerfile: Dockerfile
-#    container_name: tomcat2
-#    restart: always
-#    ports:
-#      - 8083:8080
-##      - 8010:8009
-#    volumes:
-#      - ./tomcat/webapps/:/usr/local/tomcat/webapps/                #映射一个web服务
-#      - ./tomcat/conf/server.xml:/usr/local/tomcat/conf/server.xml  #映射 tomcat的配置文件到容器里
-#      - ./tomcat/logs/:/usr/local/tomcat/logs/
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.42
+  #-------------------------redis-------------------------#
+  redis:
+    image: redis:v0.1
+    build:
+      context: ./redis
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/conf/redis.conf:/usr/local/etc/redis.conf
+      - ./redis/data/:/data/
+#      - ./redis/log/redis.log:/var/log/redis/redis.log:rw
+    networks:
+      backend:
+        ipv4_address: 192.18.0.20
+    container_name: redis
+
+  #-------------------------nginx-------------------------#
+  nginx:
+    image: nginx:v0.1
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+      - 5050:5050
+      - 4040:4040
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d/test.conf:/etc/nginx/conf.d/test.conf:ro
+      - ./nginx/logs/:/var/log/nginx/
+      - ./nginx/webapps/:/opt/webapps/
+    networks:
+      backend:
+        ipv4_address: 192.18.0.40
+    links:
+      - tomcat1:t01                                          #连接 tomcat镜像
+      - tomcat2:t02                                          #连接 tomcat镜像
+
+  #-------------------------tomcat-------------------------#
+  tomcat1:
+    image: tomcat1:v0.1
+    build:
+      context: ./tomcat
+      dockerfile: Dockerfile
+    container_name: tomcat1
+    restart: always
+    ports:
+      - 8082:8080
+#      - 8009:8009
+    volumes:
+      - ./tomcat/webapps/:/usr/local/tomcat/webapps/                #映射一个web服务
+      - ./tomcat/conf/server.xml:/usr/local/tomcat/conf/server.xml  #映射 tomcat的配置文件到容器里
+      - ./tomcat/logs/:/usr/local/tomcat/logs/
+    networks:
+      backend:
+        ipv4_address: 192.18.0.41
+  #-------------------------tomcat-------------------------#
+  tomcat2:
+    image: tomcat2:v0.1
+    build:
+      context: ./tomcat
+      dockerfile: Dockerfile
+    container_name: tomcat2
+    restart: always
+    ports:
+      - 8083:8080
+#      - 8010:8009
+    volumes:
+      - ./tomcat/webapps/:/usr/local/tomcat/webapps/                #映射一个web服务
+      - ./tomcat/conf/server.xml:/usr/local/tomcat/conf/server.xml  #映射 tomcat的配置文件到容器里
+      - ./tomcat/logs/:/usr/local/tomcat/logs/
+    networks:
+      backend:
+        ipv4_address: 192.18.0.42
 
   #-------------------------vtp-------------------------#
 #  paascloud-provider-vtp:

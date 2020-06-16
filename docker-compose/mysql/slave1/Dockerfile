@@ -1,10 +1,7 @@
 #https://github.com/mvptracy/dnmp
-FROM mysql:8.0
+FROM mysql:5.7
 
 ENV MYSQL_ROOT_PASSWORD 123456
-#ENV MYSQL_ROOT_HOST %
-#ENV MYSQL_USER user
-#ENV MYSQL_PASSWORD password
 
 #修改时区
 RUN echo "Asia/shanghai" > /etc/timezone;
