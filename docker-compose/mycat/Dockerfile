@@ -25,7 +25,7 @@ ENV MYCAT_HOME=/mycat
 ENV PATH=$PATH:$MYCAT_HOME/bin
 WORKDIR $MYCAT_HOME/bin
 RUN chmod u+x ./mycat
-#RUN rm /mycat/lib/mysql-connector-java-5.1.35.jar
-#ADD ./driver/ /mycat/lib/
+RUN rm /mycat/lib/mysql-connector-java-5.1.35.jar
+ADD ./driver/ /mycat/lib/
 EXPOSE 8066 9066
 CMD ["./mycat","console"]

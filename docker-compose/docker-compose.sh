@@ -4,7 +4,7 @@
 # https://www.jianshu.com/p/880ae58d6a35
 
 #################### 变量定义 ####################
-mysql_user="hong"    # 主服务器允许从服务器登录的用户名
+mysql_user="repl"    # 主服务器允许从服务器登录的用户名
 mysql_password="123456" # 主服务器允许从服务器登录的密码
 root_password="123456"             # 每台服务器的root密码
 # 主库列表
@@ -42,9 +42,9 @@ done
 
 #################### 主服务器操作 ####################开始
 # 在主服务器上添加数据库用户
-priv_stmt='GRANT REPLICATION SLAVE ON *.* TO "'$mysql_user'"@"%" IDENTIFIED BY "'$mysql_password'"; FLUSH PRIVILEGES;'
-
-docker exec $master_container sh -c "export MYSQL_PWD='$root_password'; mysql -u root -e '$priv_stmt'"
+# init.sql
+# priv_stmt='GRANT REPLICATION SLAVE ON *.* TO "'$mysql_user'"@"%" IDENTIFIED BY "'$mysql_password'"; FLUSH PRIVILEGES;'
+# docker exec $master_container sh -c "export MYSQL_PWD='$root_password'; mysql -u root -e '$priv_stmt'"
 
 # 查看主服务器的状态
 MS_STATUS=`docker exec $master_container sh -c 'export MYSQL_PWD='$root_password'; mysql -u root -e "SHOW MASTER STATUS"'`

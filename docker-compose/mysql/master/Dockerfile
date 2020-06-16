@@ -1,7 +1,7 @@
 #https://github.com/mvptracy/dnmp
 #https://github.com/baojingyu/docker-mycat-mysql
 #https://github.com/chendexiaqu/mysql_mycat.git
-FROM mysql:5.7
+FROM mysql:8
 
 ENV MYSQL_ROOT_PASSWORD 123456
 

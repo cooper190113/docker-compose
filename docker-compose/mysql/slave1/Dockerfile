@@ -1,5 +1,5 @@
 #https://github.com/mvptracy/dnmp
-FROM mysql:5.7
+FROM mysql:8
 
 ENV MYSQL_ROOT_PASSWORD 123456
 
