@@ -92,7 +92,7 @@
         <property name="password">123456</property>
 
         <!-- Mycat 数据库名 -->
-        <property name="schemas">portal-center,log-center</property>
+        <property name="schemas">portal-center,log-center,oauth-center,vtp-center</property>
 
         <!-- 是否使用加密的密码，0 表示不使用加密的密码 -->
         <property name="usingDecrypt">0</property>
