@@ -9,14 +9,14 @@
     </schema>
     <schema name="oauth-center" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn3">
     </schema>
-    <schema name="vtp-center" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn4">
+    <schema name="user-center" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn4">
     </schema>
 
 	<!--这里写两个dataNode，对应上述两个schema标签，database的值表示数据库的真实名称 -->
     <dataNode name="dn1" dataHost="dataHost1" database="portal-center"/>
     <dataNode name="dn2" dataHost="dataHost1" database="log-center"/>
     <dataNode name="dn3" dataHost="dataHost1" database="oauth-center"/>
-    <dataNode name="dn4" dataHost="dataHost1" database="vtp-center"/>
+    <dataNode name="dn4" dataHost="dataHost1" database="user-center"/>
 
     <!-- mycat 逻辑主机dataHost对应的物理主机.其中也设置对应的mysql登陆信息 -->
     <!-- 定义数据主机dtHost，连接到MySQL读写分离集群 ,schema中的每一个dataHost中的host属性值必须唯一-->
