@@ -1,6 +1,10 @@
 #https://www.cnblogs.com/lonelyxmas/p/11719216.html
 #https://blog.csdn.net/JackLiu16/article/details/79365878
 #https://www.cnblogs.com/python-cat/p/10375978.html
+
+# 集群
+#https://github.com/tianheng2017/redis-sentinel.git
+#https://github.com/MistRay/redis-docker-compose.git
 FROM redis:5.0
 
 #修改时区
