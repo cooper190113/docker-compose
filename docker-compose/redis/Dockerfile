@@ -5,6 +5,7 @@
 # 集群
 #https://github.com/tianheng2017/redis-sentinel.git
 #https://github.com/MistRay/redis-docker-compose.git
+#https://www.jianshu.com/p/61ce30d27625
 FROM redis:5.0
 
 #修改时区
