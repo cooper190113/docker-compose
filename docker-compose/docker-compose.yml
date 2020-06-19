@@ -114,7 +114,7 @@ services:
   redis:
     image: redis:v0.1
     build:
-      context: ./redis
+      context: ./redis/signal
       dockerfile: Dockerfile
     restart: always
     ports:
@@ -122,8 +122,8 @@ services:
     environment:
       - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
     volumes:
-      - ./redis/conf/redis.conf:/usr/local/etc/redis.conf
-      - ./redis/data/:/data/
+      - ./signal/redis/conf/redis.conf:/usr/local/etc/redis.conf
+      - ./signal/redis/data/:/data/
 #      - ./redis/log/redis.log:/var/log/redis/redis.log:rw
     networks:
       backend:
@@ -197,23 +197,3 @@ services:
     networks:
       backend:
         ipv4_address: 192.18.0.42
-
-  #-------------------------vtp-------------------------#
-  paascloud-provider-vtp:
-    image: provider-vtp:v0.1
-    build:
-      context: ./paascloud-provider-vtp
-      dockerfile: Dockerfile
-    command:
-      --privileged=true
-    restart: always
-    ports:
-      - "8089:8089"
-    environment:
-      - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
-    volumes:
-      - ./paascloud-provider-vtp/logs/:/logs/:rw
-    networks:
-      backend:
-        ipv4_address: 192.18.0.60
-    container_name: paascloud-provider-vtp
