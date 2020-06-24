@@ -7,10 +7,6 @@ networks:
       config:
         - subnet: 192.18.0.0/24
 
-volumes:
-  grafana_data: {}
-  prometheus_data: {}
-
 services:
   #-------------------------mycat-------------------------#
   mycat:
