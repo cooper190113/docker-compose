@@ -111,24 +111,130 @@ services:
 #    container_name: postgres_master
 
   #-------------------------redis-------------------------#
-  redis:
-    image: redis:v0.1
-    build:
-      context: ./redis/signal
-      dockerfile: Dockerfile
-    restart: always
+#  redis:
+#    image: redis:v0.1
+#    build:
+#      context: ./redis/signal
+#      dockerfile: Dockerfile
+#    restart: always
+#    ports:
+#      - "6379:6379"
+#    environment:
+#      - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
+#    volumes:
+#      - ./redis/signal/conf/redis.conf:/usr/local/etc/redis.conf
+#      - ./redis/signal/data/:/data/
+##      - /redis/signal/log/redis.log:/var/log/redis/redis.log:rw
+#    networks:
+#      backend:
+#        ipv4_address: 192.18.0.20
+#    container_name: redis
+
+  # 主节点的容器
+  redis-server-master:
+    image: redis:5.0
+    container_name: redis-server-master
     ports:
-      - "6379:6379"
+      - 6379:6379
+    restart: always
+    # 指定时区，保证容器内时间正确
     environment:
-      - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
+      TZ: "Asia/Shanghai"
     volumes:
-      - ./redis/signal/conf/redis.conf:/usr/local/etc/redis.conf
-      - ./redis/signal/data/:/data/
-#      - /redis/signal/log/redis.log:/var/log/redis/redis.log:rw
+      # 映射配置文件和数据目录
+      - ./redis/sentinel/master/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/sentinel/master/data:/data
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
     networks:
       backend:
         ipv4_address: 192.18.0.20
-    container_name: redis
+
+  # 从节点1的容器
+  redis-server-slave-1:
+    image: redis:5.0
+    container_name: redis-server-slave-1
+    ports:
+      - 6380:6379
+    restart: always
+    depends_on:
+      - redis-server-master
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis/sentinel/slave1/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/sentinel/slave1/data:/data
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    networks:
+      backend:
+        ipv4_address: 192.18.0.24
+  # 从节点2的容器
+  redis-server-slave-2:
+    image: redis:5.0
+    container_name: redis-server-slave-2
+    ports:
+      - 6381:6379
+    restart: always
+    depends_on:
+      - redis-server-master
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis/sentinel/slave2/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/sentinel/slave2/data:/data
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    networks:
+      backend:
+        ipv4_address: 192.18.0.25
+
+
+  redis-server-sentinel-1:
+    image: redis:5.0
+    container_name: redis-server-sentinel-1
+    ports:
+      - "6383:26379"
+    restart: always
+    depends_on:
+      - redis-server-master
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis/sentinel/sentinel1/conf/sentinel.conf:/usr/local/etc/redis/sentinel.conf
+    command: ["redis-sentinel","/usr/local/etc/redis/sentinel.conf"]
+    networks:
+      backend:
+        ipv4_address: 192.18.0.21
+  redis-server-sentinel-2:
+    image: redis:5.0
+    container_name: redis-server-sentinel-2
+    ports:
+      - "6384:26379"
+    restart: always
+    depends_on:
+      - redis-server-master
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis/sentinel/sentinel2/conf/sentinel.conf:/usr/local/etc/redis/sentinel.conf
+    command: ["redis-sentinel","/usr/local/etc/redis/sentinel.conf"]
+    networks:
+      backend:
+        ipv4_address: 192.18.0.22
+  redis-server-sentinel-3:
+    image: redis:5.0
+    container_name: redis-server-sentinel-3
+    ports:
+      - "6385:26379"
+    restart: always
+    depends_on:
+      - redis-server-master
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis/sentinel/sentinel3/conf/sentinel.conf:/usr/local/etc/redis/sentinel.conf
+    command: ["redis-sentinel","/usr/local/etc/redis/sentinel.conf"]
+    networks:
+      backend:
+        ipv4_address: 192.18.0.23
 
   #-------------------------nginx-------------------------#
   nginx:
