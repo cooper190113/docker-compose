@@ -31,8 +31,8 @@ scrape_configs:
 
   - job_name: 'mycat'
     static_configs:
-      - targets: ['192.18.0.2:8066']
+      - targets: ['192.18.0.3:8066']
         labels:
-          instance: 'Monitor mycat'
+          instance: 'Monitor mysql_master'
           platform: 'worker'
 
