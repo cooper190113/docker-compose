@@ -117,6 +117,7 @@ services:
       context: ./redis/signal
       dockerfile: Dockerfile
     restart: always
+    privileged: true  #解决权限
     ports:
       - "6379:6379"
     environment:
@@ -124,7 +125,7 @@ services:
     volumes:
       - ./redis/signal/conf/redis.conf:/usr/local/etc/redis.conf
       - ./redis/signal/data/:/data/
-#      - /redis/signal/log/redis.log:/var/log/redis/redis.log:rw
+      - ./redis/signal/log/redis.log:/data/redis.log:rw
     networks:
       backend:
         ipv4_address: 192.18.0.20
