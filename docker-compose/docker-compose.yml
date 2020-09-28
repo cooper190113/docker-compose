@@ -111,131 +111,135 @@ services:
 #    container_name: postgres_master
 
   #-------------------------redis-------------------------#
-  redis:
-    image: redis:v0.1
-    build:
-      context: ./redis/signal
-      dockerfile: Dockerfile
-    restart: always
-    privileged: true  #解决权限
-    ports:
-      - "6379:6379"
-    environment:
-      - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
-    volumes:
-      - ./redis/signal/conf/redis.conf:/usr/local/etc/redis.conf
-      - ./redis/signal/data/:/data/
-      - ./redis/signal/log/redis.log:/data/redis.log:rw
-    networks:
-      backend:
-        ipv4_address: 192.18.0.20
-    container_name: redis
-
-#  # 主节点的容器
-#  redis-server-master:
-#    image: redis:5.0
-#    container_name: redis-server-master
-#    ports:
-#      - 6379:6379
+#  redis:
+#    image: redis:v0.1
+#    build:
+#      context: ./redis/signal
+#      dockerfile: Dockerfile
 #    restart: always
-#    # 指定时区，保证容器内时间正确
+#    privileged: true  #解决权限
+#    ports:
+#      - "6379:6379"
 #    environment:
-#      TZ: "Asia/Shanghai"
+#      - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
 #    volumes:
-#      # 映射配置文件和数据目录
-#      - ./redis/sentinel/master/conf/redis.conf:/usr/local/etc/redis/redis.conf
-#      - ./redis/sentinel/master/data:/data
-#    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+#      - ./redis/signal/conf/redis.conf:/usr/local/etc/redis.conf
+#      - ./redis/signal/data/:/data/
+#      - ./redis/signal/log/redis.log:/data/redis.log:rw
 #    networks:
 #      backend:
 #        ipv4_address: 192.18.0.20
-#
-#  # 从节点1的容器
-#  redis-server-slave-1:
-#    image: redis:5.0
-#    container_name: redis-server-slave-1
-#    ports:
-#      - 6380:6379
-#    restart: always
-#    depends_on:
-#      - redis-server-master
-#    environment:
-#      TZ: "Asia/Shanghai"
-#    volumes:
-#      - ./redis/sentinel/slave1/conf/redis.conf:/usr/local/etc/redis/redis.conf
-#      - ./redis/sentinel/slave1/data:/data
-#    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.24
-#  # 从节点2的容器
-#  redis-server-slave-2:
-#    image: redis:5.0
-#    container_name: redis-server-slave-2
-#    ports:
-#      - 6381:6379
-#    restart: always
-#    depends_on:
-#      - redis-server-master
-#    environment:
-#      TZ: "Asia/Shanghai"
-#    volumes:
-#      - ./redis/sentinel/slave2/conf/redis.conf:/usr/local/etc/redis/redis.conf
-#      - ./redis/sentinel/slave2/data:/data
-#    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.25
-#
-#
-#  redis-server-sentinel-1:
-#    image: redis:5.0
-#    container_name: redis-server-sentinel-1
-#    ports:
-#      - "6383:26379"
-#    restart: always
-#    depends_on:
-#      - redis-server-master
-#    environment:
-#      TZ: "Asia/Shanghai"
-#    volumes:
-#      - ./redis/sentinel/sentinel1/conf/sentinel.conf:/usr/local/etc/redis/sentinel.conf
-#    command: ["redis-sentinel","/usr/local/etc/redis/sentinel.conf"]
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.21
-#  redis-server-sentinel-2:
-#    image: redis:5.0
-#    container_name: redis-server-sentinel-2
-#    ports:
-#      - "6384:26379"
-#    restart: always
-#    depends_on:
-#      - redis-server-master
-#    environment:
-#      TZ: "Asia/Shanghai"
-#    volumes:
-#      - ./redis/sentinel/sentinel2/conf/sentinel.conf:/usr/local/etc/redis/sentinel.conf
-#    command: ["redis-sentinel","/usr/local/etc/redis/sentinel.conf"]
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.22
-#  redis-server-sentinel-3:
-#    image: redis:5.0
-#    container_name: redis-server-sentinel-3
-#    ports:
-#      - "6385:26379"
-#    restart: always
-#    depends_on:
-#      - redis-server-master
-#    environment:
-#      TZ: "Asia/Shanghai"
-#    volumes:
-#      - ./redis/sentinel/sentinel3/conf/sentinel.conf:/usr/local/etc/redis/sentinel.conf
-#    command: ["redis-sentinel","/usr/local/etc/redis/sentinel.conf"]
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.23
+#    container_name: redis
+
+#  https://www.cnblogs.com/lenient/articles/redis-cluster_in_docker.html
+#  https://blog.csdn.net/he3more/article/details/104844183
+#  https://www.jb51.net/article/163359.htm
+#  https://www.cnblogs.com/vipzhou/p/8580495.html
+#  https://www.e-learn.cn/topic/3558996
+#  https://zhidao.baidu.com/question/525856787155995405.html
+#  https://blog.csdn.net/boling_cavalry/article/details/79041129?utm_source=tuicool&utm_medium=referral
+#  # 主节点的容器
+  redis-server-master:
+    image: redis:5.0
+    container_name: redis-server-master
+    ports:
+      - "6379:6379"
+    restart: always
+    # 指定时区，保证容器内时间正确
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      # 映射配置文件和数据目录
+      - ./redis/sentinel/master/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/sentinel/master/data:/data
+      - ./redis/sentinel/master/log/redis.log:/data/redis.log:rw
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    network_mode: "host"
+
+  # 从节点1的容器
+  redis-server-slave-1:
+    image: redis:5.0
+    container_name: redis-server-slave-1
+    ports:
+      - "6380:6379"
+    restart: always
+    depends_on:
+      - redis-server-master
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis/sentinel/slave1/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/sentinel/slave1/data:/data
+      - ./redis/sentinel/slave1/log/redis.log:/data/redis.log:rw
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    network_mode: "host"
+  # 从节点2的容器
+  redis-server-slave-2:
+    image: redis:5.0
+    container_name: redis-server-slave-2
+    ports:
+      - "6381:6379"
+    restart: always
+    depends_on:
+      - redis-server-master
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis/sentinel/slave2/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/sentinel/slave2/data:/data
+      - ./redis/sentinel/slave2/log/redis.log:/data/redis.log:rw
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    network_mode: "host"
+
+
+  redis-server-sentinel-1:
+    image: redis:5.0
+    container_name: redis-server-sentinel-1
+    ports:
+      - "6383:26379"
+    restart: always
+    depends_on:
+      - redis-server-master
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis/sentinel/sentinel1/conf/sentinel.conf:/usr/local/etc/redis/sentinel.conf
+      - ./redis/sentinel/sentinel1/data:/data
+      - ./redis/sentinel/sentinel1/log/redis.log:/data/redis.log:rw
+    command: ["redis-sentinel","/usr/local/etc/redis/sentinel.conf"]
+    network_mode: "host"
+  redis-server-sentinel-2:
+    image: redis:5.0
+    container_name: redis-server-sentinel-2
+    ports:
+      - "6384:26379"
+    restart: always
+    depends_on:
+      - redis-server-master
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis/sentinel/sentinel2/conf/sentinel.conf:/usr/local/etc/redis/sentinel.conf
+      - ./redis/sentinel/sentinel2/data:/data
+      - ./redis/sentinel/sentinel2/log/redis.log:/data/redis.log:rw
+    command: ["redis-sentinel","/usr/local/etc/redis/sentinel.conf"]
+    network_mode: "host"
+  redis-server-sentinel-3:
+    image: redis:5.0
+    container_name: redis-server-sentinel-3
+    ports:
+      - "6385:26379"
+    restart: always
+    depends_on:
+      - redis-server-master
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis/sentinel/sentinel3/conf/sentinel.conf:/usr/local/etc/redis/sentinel.conf
+      - ./redis/sentinel/sentinel3/data:/data
+      - ./redis/sentinel/sentinel3/log/redis.log:/data/redis.log:rw
+    command: ["redis-sentinel","/usr/local/etc/redis/sentinel.conf"]
+    network_mode: "host"
 
   #-------------------------nginx-------------------------#
   nginx:
@@ -254,7 +258,7 @@ services:
       - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/conf.d/test.conf:/etc/nginx/conf.d/test.conf:ro
+      - ./nginx/conf.d/web.conf:/etc/nginx/conf.d/web.conf:ro
       - ./nginx/logs/:/var/log/nginx/
       - ./nginx/webapps/:/opt/webapps/
     networks:

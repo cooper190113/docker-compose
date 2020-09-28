@@ -16,8 +16,5 @@ RUN echo "Asia/shanghai" > /etc/timezone;
 RUN rm -rf /etc/localtime;
 RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-# 删除默认的default.conf映射配置
-RUN rm /etc/nginx/conf.d/default.conf
 ADD nginx.conf /etc/nginx/nginx.conf
-ADD ./conf.d/test.conf /etc/nginx/conf.d/test.conf
-#COPY ./ssl/ /etc/nginx/ssl/
+ADD ./conf.d/web.conf /etc/nginx/conf.d/web.conf
