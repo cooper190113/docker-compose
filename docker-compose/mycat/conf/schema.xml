@@ -48,6 +48,7 @@
         <!--配置后台数据库的IP地址和端口号，还有账号密码 -->
         <writeHost host="m1" url="192.18.0.3:3306" user="root" password="123456"/>
         <writeHost host="s1" url="192.18.0.4:3306" user="root" password="123456"/>
+        <writeHost host="s2" url="192.18.0.5:3306" user="root" password="123456"/>
     </dataHost>
 
 </mycat:schema>
