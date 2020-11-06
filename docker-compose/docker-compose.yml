@@ -281,9 +281,9 @@ services:
 #      - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
 #    volumes:
 #      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-#      - ./nginx/conf.d/test.conf:/etc/nginx/conf.d/test.conf:ro
+#      - ./nginx/conf.d:/etc/nginx/conf.d
 #      - ./nginx/logs/:/var/log/nginx/
-#      - ./nginx/webapps/:/opt/webapps/
+#      - ./nginx/html:/usr/share/nginx/html
 #    networks:
 #      backend:
 #        ipv4_address: 192.18.0.40
