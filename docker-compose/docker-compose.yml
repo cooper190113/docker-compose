@@ -29,6 +29,7 @@ services:
     links:
       - mysql_master
       - mysql_slave1
+      - mysql_slave2
     hostname: mycat
     networks:
       backend:

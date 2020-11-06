@@ -28,7 +28,7 @@ function docker_ip() {
 
 #################### docker-compose初始化 ####################
 docker-compose down
-rm -rf ./mysql/master/data/* ./mysql/slave1/data/*
+rm -rf ./mysql/master/data/* ./mysql/slave1/data/* ./mysql/slave2/data/*
 docker-compose build
 docker-compose up -d
 
