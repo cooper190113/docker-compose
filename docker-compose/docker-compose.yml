@@ -9,114 +9,114 @@ networks:
 
 services:
   #-------------------------mycat-------------------------#
-  mycat:
-    image: mycat:v0.1
-    build:
-      context: ./mycat
-      dockerfile: Dockerfile
-    container_name: mycat
-    restart: always
-    environment:
-      - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
-    volumes:
-      - ./mycat/conf/schema.xml:/mycat/conf/schema.xml:ro
-      - ./mycat/conf/server.xml:/mycat/conf/server.xml:ro
-      - ./mycat/log/:/mycat/logs/:rw
-      - ./mycat/hosts:/etc/hosts:ro
-    ports:
-      - "8066:8066"
-      - "9066:9066"
-    links:
-      - mysql_master
-      - mysql_slave1
-      - mysql_slave2
-    hostname: mycat
-    networks:
-      backend:
-        ipv4_address: 192.18.0.2
-
-  #-------------------------mysql_master-------------------------#
-  mysql_master:
-    image: mysql_master:v0.1
-    build:
-      context: ./mysql/master
-      dockerfile: Dockerfile
-    restart: always
-    environment:
-      - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
-    command:
-      --default-authentication-plugin=mysql_native_password
-      --character-set-server=utf8mb4
-      --collation-server=utf8mb4_general_ci
-      --explicit_defaults_for_timestamp=true
-      --lower_case_table_names=1
-    ports:
-      - 3306:3306
-    volumes:
-      - ./mysql/master/data:/var/lib/mysql
-      - ./mysql/master/mysql.conf.d/my.cnf:/etc/my.cnf
-      - ./mysql/master/init.sql:/docker-entrypoint-initdb.d/init.sql
-    hostname: m1
-    networks:
-      backend:
-        ipv4_address: 192.18.0.3
-    container_name: mysql_master
-
-  #-------------------------mysql_slave_1-------------------------#
-  mysql_slave1:
-    image: mysql_slave1:v0.1
-    build:
-      context: ./mysql/slave1
-      dockerfile: Dockerfile
-    restart: always
-    environment:
-      - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
-    command:
-      --default-authentication-plugin=mysql_native_password
-      --character-set-server=utf8mb4
-      --collation-server=utf8mb4_general_ci
-      --explicit_defaults_for_timestamp=true
-      --lower_case_table_names=1
-    ports:
-      - 3307:3306
-    volumes:
-      - ./mysql/slave1/data:/var/lib/mysql
-      - ./mysql/slave1/mysql.conf.d/my.cnf:/etc/my.cnf
-    hostname: s1
-    networks:
-      backend:
-        ipv4_address: 192.18.0.4
-    container_name: mysql_slave1
-    links:
-      - mysql_master
-
-  #-------------------------mysql_slave_1-------------------------#
-  mysql_slave2:
-    image: mysql_slave2:v0.1
-    build:
-      context: ./mysql/slave2
-      dockerfile: Dockerfile
-    restart: always
-    environment:
-      - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
-    command:
-      --default-authentication-plugin=mysql_native_password
-      --character-set-server=utf8mb4
-      --collation-server=utf8mb4_general_ci
-      --explicit_defaults_for_timestamp=true
-      --lower_case_table_names=1
-    ports:
-      - 3308:3306
-    volumes:
-      - ./mysql/slave2/data:/var/lib/mysql
-      - ./mysql/slave2/mysql.conf.d/my.cnf:/etc/my.cnf
-    hostname: s2
-    networks:
-      backend:
-        ipv4_address: 192.18.0.5
-    container_name: mysql_slave2
-    links:
-      - mysql_master
+#  mycat:
+#    image: mycat:v0.1
+#    build:
+#      context: ./mycat
+#      dockerfile: Dockerfile
+#    container_name: mycat
+#    restart: always
+#    environment:
+#      - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
+#    volumes:
+#      - ./mycat/conf/schema.xml:/mycat/conf/schema.xml:ro
+#      - ./mycat/conf/server.xml:/mycat/conf/server.xml:ro
+#      - ./mycat/log/:/mycat/logs/:rw
+#      - ./mycat/hosts:/etc/hosts:ro
+#    ports:
+#      - "8066:8066"
+#      - "9066:9066"
+#    links:
+#      - mysql_master
+#      - mysql_slave1
+#      - mysql_slave2
+#    hostname: mycat
+#    networks:
+#      backend:
+#        ipv4_address: 192.18.0.2
+#
+#  #-------------------------mysql_master-------------------------#
+#  mysql_master:
+#    image: mysql_master:v0.1
+#    build:
+#      context: ./mysql/master
+#      dockerfile: Dockerfile
+#    restart: always
+#    environment:
+#      - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
+#    command:
+#      --default-authentication-plugin=mysql_native_password
+#      --character-set-server=utf8mb4
+#      --collation-server=utf8mb4_general_ci
+#      --explicit_defaults_for_timestamp=true
+#      --lower_case_table_names=1
+#    ports:
+#      - 3306:3306
+#    volumes:
+#      - ./mysql/master/data:/var/lib/mysql
+#      - ./mysql/master/mysql.conf.d/my.cnf:/etc/my.cnf
+#      - ./mysql/master/init.sql:/docker-entrypoint-initdb.d/init.sql
+#    hostname: m1
+#    networks:
+#      backend:
+#        ipv4_address: 192.18.0.3
+#    container_name: mysql_master
+#
+#  #-------------------------mysql_slave_1-------------------------#
+#  mysql_slave1:
+#    image: mysql_slave1:v0.1
+#    build:
+#      context: ./mysql/slave1
+#      dockerfile: Dockerfile
+#    restart: always
+#    environment:
+#      - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
+#    command:
+#      --default-authentication-plugin=mysql_native_password
+#      --character-set-server=utf8mb4
+#      --collation-server=utf8mb4_general_ci
+#      --explicit_defaults_for_timestamp=true
+#      --lower_case_table_names=1
+#    ports:
+#      - 3307:3306
+#    volumes:
+#      - ./mysql/slave1/data:/var/lib/mysql
+#      - ./mysql/slave1/mysql.conf.d/my.cnf:/etc/my.cnf
+#    hostname: s1
+#    networks:
+#      backend:
+#        ipv4_address: 192.18.0.4
+#    container_name: mysql_slave1
+#    links:
+#      - mysql_master
+#
+#  #-------------------------mysql_slave_1-------------------------#
+#  mysql_slave2:
+#    image: mysql_slave2:v0.1
+#    build:
+#      context: ./mysql/slave2
+#      dockerfile: Dockerfile
+#    restart: always
+#    environment:
+#      - TZ=Asia/Shanghai         # 设置容器时区与宿主机保持一致
+#    command:
+#      --default-authentication-plugin=mysql_native_password
+#      --character-set-server=utf8mb4
+#      --collation-server=utf8mb4_general_ci
+#      --explicit_defaults_for_timestamp=true
+#      --lower_case_table_names=1
+#    ports:
+#      - 3308:3306
+#    volumes:
+#      - ./mysql/slave2/data:/var/lib/mysql
+#      - ./mysql/slave2/mysql.conf.d/my.cnf:/etc/my.cnf
+#    hostname: s2
+#    networks:
+#      backend:
+#        ipv4_address: 192.18.0.5
+#    container_name: mysql_slave2
+#    links:
+#      - mysql_master
 
   #-------------------------postgres-------------------------#
   #  postgres_master:
@@ -153,117 +153,144 @@ services:
 #    volumes:
 #      - ./redis/signal/conf/redis.conf:/usr/local/etc/redis.conf
 #      - ./redis/signal/data/:/data/
-##      - /redis/signal/log/redis.log:/var/log/redis/redis.log:rw
+##      - /redis/signal/log/redis.log:/data/redis.log:rw
 #    networks:
 #      backend:
 #        ipv4_address: 192.18.0.20
 #    container_name: redis
 
-#  # 主节点的容器
-#  redis-server-master:
-#    image: redis:5.0
-#    container_name: redis-server-master
-#    ports:
-#      - 6379:6379
-#    restart: always
-#    # 指定时区，保证容器内时间正确
-#    environment:
-#      TZ: "Asia/Shanghai"
-#    volumes:
-#      # 映射配置文件和数据目录
-#      - ./redis/sentinel/master/conf/redis.conf:/usr/local/etc/redis/redis.conf
-#      - ./redis/sentinel/master/data:/data
-#    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.20
-#
-#  # 从节点1的容器
-#  redis-server-slave-1:
-#    image: redis:5.0
-#    container_name: redis-server-slave-1
-#    ports:
-#      - 6380:6379
-#    restart: always
-#    depends_on:
-#      - redis-server-master
-#    environment:
-#      TZ: "Asia/Shanghai"
-#    volumes:
-#      - ./redis/sentinel/slave1/conf/redis.conf:/usr/local/etc/redis/redis.conf
-#      - ./redis/sentinel/slave1/data:/data
-#    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.24
-#  # 从节点2的容器
-#  redis-server-slave-2:
-#    image: redis:5.0
-#    container_name: redis-server-slave-2
-#    ports:
-#      - 6381:6379
-#    restart: always
-#    depends_on:
-#      - redis-server-master
-#    environment:
-#      TZ: "Asia/Shanghai"
-#    volumes:
-#      - ./redis/sentinel/slave2/conf/redis.conf:/usr/local/etc/redis/redis.conf
-#      - ./redis/sentinel/slave2/data:/data
-#    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.25
-#
-#
-#  redis-server-sentinel-1:
-#    image: redis:5.0
-#    container_name: redis-server-sentinel-1
-#    ports:
-#      - "6383:26379"
-#    restart: always
-#    depends_on:
-#      - redis-server-master
-#    environment:
-#      TZ: "Asia/Shanghai"
-#    volumes:
-#      - ./redis/sentinel/sentinel1/conf/sentinel.conf:/usr/local/etc/redis/sentinel.conf
-#    command: ["redis-sentinel","/usr/local/etc/redis/sentinel.conf"]
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.21
-#  redis-server-sentinel-2:
-#    image: redis:5.0
-#    container_name: redis-server-sentinel-2
-#    ports:
-#      - "6384:26379"
-#    restart: always
-#    depends_on:
-#      - redis-server-master
-#    environment:
-#      TZ: "Asia/Shanghai"
-#    volumes:
-#      - ./redis/sentinel/sentinel2/conf/sentinel.conf:/usr/local/etc/redis/sentinel.conf
-#    command: ["redis-sentinel","/usr/local/etc/redis/sentinel.conf"]
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.22
-#  redis-server-sentinel-3:
-#    image: redis:5.0
-#    container_name: redis-server-sentinel-3
-#    ports:
-#      - "6385:26379"
-#    restart: always
-#    depends_on:
-#      - redis-server-master
-#    environment:
-#      TZ: "Asia/Shanghai"
-#    volumes:
-#      - ./redis/sentinel/sentinel3/conf/sentinel.conf:/usr/local/etc/redis/sentinel.conf
-#    command: ["redis-sentinel","/usr/local/etc/redis/sentinel.conf"]
-#    networks:
-#      backend:
-#        ipv4_address: 192.18.0.23
+  # 主节点的容器
+  redis-master:
+    image: redis:5.0
+    ports:
+      - 6379:6379
+    restart: always
+    working_dir: /usr/src/redis
+    privileged: true
+    stdin_open: true
+    tty: true
+    # 指定时区，保证容器内时间正确
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      # 映射配置文件和数据目录
+      - ./redis/sentinel/master:/usr/src/redis
+    command: ["redis-server", "/usr/src/redis/conf/redis.conf"]
+    networks:
+      backend:
+        ipv4_address: 192.18.0.20
+    container_name: redis-master
+
+  # 从节点1的容器
+  redis-slave-1:
+    image: redis:5.0
+    ports:
+      - 6380:6379
+    restart: always
+    working_dir: /usr/src/redis
+    privileged: true
+    stdin_open: true
+    tty: true
+    # 指定时区，保证容器内时间正确
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      # 映射配置文件和数据目录
+      - ./redis/sentinel/slave1:/usr/src/redis
+    command: ["redis-server", "/usr/src/redis/conf/redis.conf"]
+    networks:
+      backend:
+        ipv4_address: 192.18.0.24
+    depends_on:
+      - redis-master
+    container_name: redis-slave-1
+
+  # 从节点2的容器
+  redis-slave-2:
+    image: redis:5.0
+    ports:
+      - 6381:6379
+    restart: always
+    working_dir: /usr/src/redis
+    privileged: true
+    stdin_open: true
+    tty: true
+    # 指定时区，保证容器内时间正确
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      # 映射配置文件和数据目录
+      - ./redis/sentinel/slave2:/usr/src/redis
+    command: ["redis-server", "/usr/src/redis/conf/redis.conf"]
+    networks:
+      backend:
+        ipv4_address: 192.18.0.25
+    depends_on:
+      - redis-master
+    container_name: redis-slave-2
+
+  redis-sentinel-1:
+    image: redis:5.0
+    ports:
+      - "6383:26379"
+    restart: always
+    working_dir: /usr/src/redis
+    stdin_open: true
+    tty: true
+    privileged: true
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis/sentinel/sentinel1:/usr/src/redis
+    command: ["redis-sentinel","/usr/src/redis/conf/sentinel.conf"]
+    networks:
+      backend:
+        ipv4_address: 192.18.0.21
+    depends_on:
+      - redis-master
+    container_name: redis-sentinel-1
+
+  redis-sentinel-2:
+    image: redis:5.0
+    ports:
+      - "6384:26379"
+    restart: always
+    working_dir: /usr/src/redis
+    stdin_open: true
+    tty: true
+    privileged: true
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis/sentinel/sentinel2:/usr/src/redis
+    command: ["redis-sentinel","/usr/src/redis/conf/sentinel.conf"]
+    networks:
+      backend:
+        ipv4_address: 192.18.0.22
+    depends_on:
+      - redis-master
+    container_name: redis-sentinel-2
+
+  redis-sentinel-3:
+    image: redis:5.0
+    ports:
+      - "6385:26379"
+    restart: always
+    working_dir: /usr/src/redis
+    stdin_open: true
+    tty: true
+    privileged: true
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis/sentinel/sentinel3:/usr/src/redis
+    command: ["redis-sentinel","/usr/src/redis/conf/sentinel.conf"]
+    networks:
+      backend:
+        ipv4_address: 192.18.0.23
+    depends_on:
+      - redis-master
+    container_name: redis-sentinel-3
 
 #  #-------------------------nginx-------------------------#
 #  nginx:
