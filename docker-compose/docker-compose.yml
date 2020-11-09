@@ -232,7 +232,7 @@ services:
   redis-sentinel-1:
     image: redis:5.0
     ports:
-      - "6383:26379"
+      - "26379:26379"
     restart: always
     working_dir: /usr/src/redis
     stdin_open: true
@@ -253,7 +253,7 @@ services:
   redis-sentinel-2:
     image: redis:5.0
     ports:
-      - "6384:26379"
+      - "26380:26379"
     restart: always
     working_dir: /usr/src/redis
     stdin_open: true
@@ -274,7 +274,7 @@ services:
   redis-sentinel-3:
     image: redis:5.0
     ports:
-      - "6385:26379"
+      - "26381:26379"
     restart: always
     working_dir: /usr/src/redis
     stdin_open: true
