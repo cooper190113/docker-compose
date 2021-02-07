@@ -13,7 +13,7 @@ root_password="123456"  # 每台服务器的root密码
 master_container=mysql_master
 # 从库列表
 # slave_containers=(mysql_slave1 mysql_slave2)
-slave_containers=(mysql_slave1)
+slave_containers=(mysql_slave1 mysql_slave2)
 # 所有的数据库集群列表
 all_containers=("$master_container" "${slave_containers[@]}")
 
@@ -28,7 +28,7 @@ function docker_ip() {
 
 #################### docker-compose初始化 ####################
 docker-compose down
-rm -rf ./mysql/master/data/* ./mysql/slave1/data/*
+rm -rf ./mysql/master/data/* ./mysql/slave1/data/* ./mysql/slave2/data/*
 docker-compose build
 docker-compose up -d
 
@@ -43,7 +43,8 @@ done
 
 #################### 主服务器操作 ####################开始
 # 在主服务器上添加数据库用户
-# init.sql
+# init.sql #mysql8.0主从
+# or mysql8.0以下主从
 # priv_stmt='GRANT REPLICATION SLAVE ON *.* TO "'$mysql_user'"@"%" IDENTIFIED BY "'$mysql_password'"; FLUSH PRIVILEGES;'
 # docker exec $master_container sh -c "export MYSQL_PWD='$root_password'; mysql -u root -e '$priv_stmt'"
 
